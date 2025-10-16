@@ -1,0 +1,779 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Number Systems Adventure</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 25%, #f093fb 50%, #4facfe 75%, #00f2fe 100%);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
+            min-height: 100vh;
+        }
+        
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        @keyframes pulse-glow {
+            0%, 100% { 
+                box-shadow: 0 0 20px rgba(255, 215, 0, 0.6);
+                transform: scale(1);
+            }
+            50% { 
+                box-shadow: 0 0 40px rgba(255, 215, 0, 0.9);
+                transform: scale(1.05);
+            }
+        }
+        .glow { animation: pulse-glow 2s infinite; }
+        
+        @keyframes slideIn {
+            from { transform: translateY(-20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        .slide-in { animation: slideIn 0.5s ease-out; }
+        
+        @keyframes celebrate {
+            0%, 100% { transform: scale(1) rotate(0deg); }
+            25% { transform: scale(1.2) rotate(-5deg); }
+            50% { transform: scale(1.3) rotate(5deg); }
+            75% { transform: scale(1.2) rotate(-5deg); }
+        }
+        .celebrate { animation: celebrate 0.6s ease-in-out; }
+        
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        .bounce { animation: bounce 1s ease-in-out infinite; }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+        .float { animation: float 3s ease-in-out infinite; }
+        
+        .card-3d {
+            transform-style: preserve-3d;
+            transition: all 0.3s ease;
+        }
+        .card-3d:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        }
+        
+        .glass {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        
+        .glass-dark {
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+    </style>
+</head>
+<body class="min-h-screen text-gray-800">
+    
+    <!-- Header -->
+    <header class="glass-dark p-6 sticky top-0 z-50 shadow-2xl">
+        <div class="container mx-auto flex justify-between items-center">
+            <h1 class="text-3xl font-bold text-white drop-shadow-lg">🎮 Number Systems Adventure</h1>
+            <div class="flex gap-6 items-center">
+                <div class="glass text-center px-4 py-2 rounded-2xl">
+                    <div class="text-xs text-gray-600 font-semibold">Score</div>
+                    <div id="score" class="text-2xl font-bold bg-gradient-to-r from-yellow-500 to-orange-500 bg-clip-text text-transparent">0</div>
+                </div>
+                <div class="glass text-center px-4 py-2 rounded-2xl">
+                    <div class="text-xs text-gray-600 font-semibold">Level</div>
+                    <div id="level" class="text-2xl font-bold bg-gradient-to-r from-green-500 to-blue-500 bg-clip-text text-transparent">1</div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="container mx-auto p-6 max-w-6xl">
+        
+        <!-- Welcome Screen -->
+        <div id="welcomeScreen" class="slide-in">
+            <div class="glass rounded-3xl p-10 text-center mb-8 shadow-2xl">
+                <div class="float mb-6">
+                    <h2 class="text-6xl font-bold bg-gradient-to-r from-purple-600 via-pink-600 to-blue-600 bg-clip-text text-transparent mb-4">
+                        Welcome, Digital Explorer! 🚀
+                    </h2>
+                </div>
+                <p class="text-2xl mb-8 text-gray-700 font-medium">Master the language of computers by learning Binary, Hexadecimal, and Decimal conversions!</p>
+                
+                <div class="grid md:grid-cols-3 gap-6 mb-10">
+                    <div class="card-3d glass p-8 rounded-2xl shadow-xl border-2 border-blue-200">
+                        <div class="text-7xl mb-4 bounce" style="animation-delay: 0s">💻</div>
+                        <h3 class="text-3xl font-bold mb-3 text-blue-600">Binary</h3>
+                        <p class="text-gray-600 text-lg">The language of computers using only 0s and 1s</p>
+                    </div>
+                    <div class="card-3d glass p-8 rounded-2xl shadow-xl border-2 border-purple-200">
+                        <div class="text-7xl mb-4 bounce" style="animation-delay: 0.2s">🎨</div>
+                        <h3 class="text-3xl font-bold mb-3 text-purple-600">Hexadecimal</h3>
+                        <p class="text-gray-600 text-lg">Base-16 system used by programmers</p>
+                    </div>
+                    <div class="card-3d glass p-8 rounded-2xl shadow-xl border-2 border-green-200">
+                        <div class="text-7xl mb-4 bounce" style="animation-delay: 0.4s">🔢</div>
+                        <h3 class="text-3xl font-bold mb-3 text-green-600">Decimal</h3>
+                        <p class="text-gray-600 text-lg">Our everyday base-10 number system</p>
+                    </div>
+                </div>
+                
+                <button onclick="startAdventure()" class="bg-gradient-to-r from-green-500 via-blue-500 to-purple-500 hover:from-green-600 hover:via-blue-600 hover:to-purple-600 text-white font-bold py-5 px-16 rounded-full text-3xl transform hover:scale-110 transition-all glow shadow-2xl">
+                    Start Adventure! 🎯
+                </button>
+            </div>
+        </div>
+
+        <!-- Main Game Area -->
+        <div id="gameArea" class="hidden">
+            
+            <!-- Lesson Selection -->
+            <div id="lessonSelect" class="glass rounded-3xl p-10 mb-8 shadow-2xl">
+                <h2 class="text-5xl font-bold mb-10 text-center bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">Choose Your Quest</h2>
+                
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <button onclick="startLesson('decToBin')" class="card-3d lesson-card glass p-8 rounded-2xl hover:scale-105 transition-all shadow-xl border-2 border-blue-300 hover:border-blue-500">
+                        <div class="text-6xl mb-4">🔄</div>
+                        <h3 class="text-2xl font-bold mb-3 text-blue-700">Decimal → Binary</h3>
+                        <p class="text-sm text-gray-600 mb-4">Learn to convert everyday numbers to computer language</p>
+                        <div class="mt-4 bg-yellow-400 text-yellow-900 font-bold px-3 py-1 rounded-full inline-block">⭐ Level 1</div>
+                    </button>
+                    
+                    <button onclick="startLesson('binToDec')" class="card-3d lesson-card glass p-8 rounded-2xl hover:scale-105 transition-all shadow-xl border-2 border-green-300 hover:border-green-500">
+                        <div class="text-6xl mb-4">🔢</div>
+                        <h3 class="text-2xl font-bold mb-3 text-green-700">Binary → Decimal</h3>
+                        <p class="text-sm text-gray-600 mb-4">Decode binary numbers back to decimal</p>
+                        <div class="mt-4 bg-yellow-400 text-yellow-900 font-bold px-3 py-1 rounded-full inline-block">⭐ Level 1</div>
+                    </button>
+                    
+                    <button onclick="startLesson('hexToBin')" class="card-3d lesson-card glass p-8 rounded-2xl hover:scale-105 transition-all shadow-xl border-2 border-purple-300 hover:border-purple-500">
+                        <div class="text-6xl mb-4">🎨</div>
+                        <h3 class="text-2xl font-bold mb-3 text-purple-700">Hex → Binary</h3>
+                        <p class="text-sm text-gray-600 mb-4">Convert hexadecimal to binary format</p>
+                        <div class="mt-4 bg-orange-400 text-orange-900 font-bold px-3 py-1 rounded-full inline-block">⭐ Level 2</div>
+                    </button>
+                    
+                    <button onclick="startLesson('binToHex')" class="card-3d lesson-card glass p-8 rounded-2xl hover:scale-105 transition-all shadow-xl border-2 border-pink-300 hover:border-pink-500">
+                        <div class="text-6xl mb-4">🔮</div>
+                        <h3 class="text-2xl font-bold mb-3 text-pink-700">Binary → Hex</h3>
+                        <p class="text-sm text-gray-600 mb-4">Group binary into hexadecimal</p>
+                        <div class="mt-4 bg-orange-400 text-orange-900 font-bold px-3 py-1 rounded-full inline-block">⭐ Level 2</div>
+                    </button>
+                    
+                    <button onclick="startLesson('hexToDec')" class="card-3d lesson-card glass p-8 rounded-2xl hover:scale-105 transition-all shadow-xl border-2 border-orange-300 hover:border-orange-500">
+                        <div class="text-6xl mb-4">🧮</div>
+                        <h3 class="text-2xl font-bold mb-3 text-orange-700">Hex → Decimal</h3>
+                        <p class="text-sm text-gray-600 mb-4">Convert hexadecimal to decimal</p>
+                        <div class="mt-4 bg-red-400 text-red-900 font-bold px-3 py-1 rounded-full inline-block">⭐ Level 3</div>
+                    </button>
+                    
+                    <button onclick="startLesson('decToHex')" class="card-3d lesson-card glass p-8 rounded-2xl hover:scale-105 transition-all shadow-xl border-2 border-red-300 hover:border-red-500">
+                        <div class="text-6xl mb-4">⚡</div>
+                        <h3 class="text-2xl font-bold mb-3 text-red-700">Decimal → Hex</h3>
+                        <p class="text-sm text-gray-600 mb-4">Convert decimal to hexadecimal</p>
+                        <div class="mt-4 bg-red-400 text-red-900 font-bold px-3 py-1 rounded-full inline-block">⭐ Level 3</div>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Lesson Content Area -->
+            <div id="lessonContent" class="hidden">
+                <!-- Back Button -->
+                <button onclick="backToMenu()" class="mb-6 glass hover:bg-gray-100 text-gray-800 font-bold px-8 py-3 rounded-full transition-all shadow-lg hover:shadow-xl transform hover:scale-105">
+                    ← Back to Menu
+                </button>
+
+                <!-- Tutorial Section -->
+                <div id="tutorial" class="glass rounded-3xl p-10 mb-8 shadow-2xl">
+                    <h2 id="tutorialTitle" class="text-4xl font-bold mb-8 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent"></h2>
+                    <div id="tutorialContent" class="space-y-6"></div>
+                </div>
+
+                <!-- Interactive Exercise -->
+                <div id="exercise" class="glass rounded-3xl p-10 shadow-2xl">
+                    <div class="flex justify-between items-center mb-8">
+                        <h3 class="text-4xl font-bold text-purple-700">Challenge Time! 🎯</h3>
+                        <div class="glass-dark text-white text-center px-6 py-3 rounded-2xl">
+                            <div class="text-sm font-semibold">Challenge</div>
+                            <div id="challengeNum" class="text-3xl font-bold">1 / 5</div>
+                        </div>
+                    </div>
+                    
+                    <div id="questionArea" class="mb-10"></div>
+                    
+                    <div id="answerArea" class="mb-8"></div>
+                    
+                    <div id="feedback" class="hidden mb-8 p-6 rounded-2xl text-center text-xl font-bold shadow-lg"></div>
+                    
+                    <div class="flex gap-4 justify-center flex-wrap">
+                        <button id="checkBtn" onclick="checkAnswer()" class="bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white px-10 py-4 rounded-full font-bold text-xl transition-all transform hover:scale-110 shadow-lg">
+                            Check Answer ✓
+                        </button>
+                        <button id="nextBtn" onclick="nextChallenge()" class="hidden bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white px-10 py-4 rounded-full font-bold text-xl transition-all transform hover:scale-110 shadow-lg">
+                            Next Challenge →
+                        </button>
+                        <button id="hintBtn" onclick="showHint()" class="bg-gradient-to-r from-yellow-400 to-yellow-500 hover:from-yellow-500 hover:to-yellow-600 text-white px-10 py-4 rounded-full font-bold text-xl transition-all transform hover:scale-110 shadow-lg">
+                            Hint 💡
+                        </button>
+                    </div>
+                    
+                    <div id="hintArea" class="hidden mt-8 p-6 glass-dark text-white rounded-2xl border-2 border-yellow-400 shadow-lg"></div>
+                </div>
+            </div>
+
+            <!-- Completion Screen -->
+            <div id="completionScreen" class="hidden glass rounded-3xl p-12 text-center shadow-2xl">
+                <div class="text-9xl mb-8 float">🏆</div>
+                <h2 class="text-6xl font-bold mb-6 bg-gradient-to-r from-yellow-500 via-orange-500 to-red-500 bg-clip-text text-transparent">Quest Complete!</h2>
+                <p class="text-3xl mb-8 text-gray-700 font-semibold">You've mastered this conversion!</p>
+                <div id="finalScore" class="text-7xl font-bold bg-gradient-to-r from-green-500 to-blue-500 bg-clip-text text-transparent mb-10"></div>
+                <div class="flex gap-6 justify-center flex-wrap">
+                    <button onclick="backToMenu()" class="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white px-10 py-5 rounded-full font-bold text-2xl transition-all transform hover:scale-110 shadow-2xl">
+                        Choose Another Quest
+                    </button>
+                    <button onclick="restartLesson()" class="bg-gradient-to-r from-green-500 to-teal-600 hover:from-green-600 hover:to-teal-700 text-white px-10 py-5 rounded-full font-bold text-2xl transition-all transform hover:scale-110 shadow-2xl">
+                        Practice Again
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Game State
+        let gameState = {
+            score: 0,
+            level: 1,
+            currentLesson: null,
+            currentChallenge: 0,
+            totalChallenges: 5,
+            correctAnswers: 0,
+            currentQuestion: null,
+            currentAnswer: null
+        };
+
+        // Power tables for reference
+        const powerTables = {
+            2: [128, 64, 32, 16, 8, 4, 2, 1],
+            16: [268435456, 16777216, 1048576, 65536, 4096, 256, 16, 1]
+        };
+
+        // Hex conversion chart
+        const hexChart = {
+            '0': '0000', '1': '0001', '2': '0010', '3': '0011',
+            '4': '0100', '5': '0101', '6': '0110', '7': '0111',
+            '8': '1000', '9': '1001', 'A': '1010', 'B': '1011',
+            'C': '1100', 'D': '1101', 'E': '1110', 'F': '1111'
+        };
+
+        const binToHexChart = {
+            '0000': '0', '0001': '1', '0010': '2', '0011': '3',
+            '0100': '4', '0101': '5', '0110': '6', '0111': '7',
+            '1000': '8', '1001': '9', '1010': 'A', '1011': 'B',
+            '1100': 'C', '1101': 'D', '1110': 'E', '1111': 'F'
+        };
+
+        function startAdventure() {
+            document.getElementById('welcomeScreen').classList.add('hidden');
+            document.getElementById('gameArea').classList.remove('hidden');
+        }
+
+        function startLesson(lessonType) {
+            gameState.currentLesson = lessonType;
+            gameState.currentChallenge = 0;
+            gameState.correctAnswers = 0;
+            
+            document.getElementById('lessonSelect').classList.add('hidden');
+            document.getElementById('lessonContent').classList.remove('hidden');
+            document.getElementById('completionScreen').classList.add('hidden');
+            document.getElementById('tutorial').classList.remove('hidden');
+            document.getElementById('exercise').classList.remove('hidden');
+            
+            loadTutorial(lessonType);
+            generateChallenge();
+        }
+
+        function loadTutorial(lessonType) {
+            const tutorials = {
+                'decToBin': {
+                    title: '🔄 Decimal to Binary Conversion',
+                    content: `
+                        <div class="space-y-6">
+                            <div class="glass p-8 rounded-2xl border-2 border-blue-300 shadow-lg">
+                                <h4 class="text-2xl font-bold mb-4 text-blue-700">🎯 The Challenge</h4>
+                                <p class="text-lg text-gray-700">Convert everyday decimal numbers (like 138) into binary format that computers understand!</p>
+                            </div>
+                            
+                            <div class="glass p-8 rounded-2xl border-2 border-green-300 shadow-lg">
+                                <h4 class="text-2xl font-bold mb-4 text-green-700">📚 Step-by-Step Method</h4>
+                                <ol class="space-y-3 text-lg list-decimal list-inside text-gray-700">
+                                    <li>Create a binary weighting table: 128, 64, 32, 16, 8, 4, 2, 1</li>
+                                    <li>Start from the left, find the largest value ≤ your number</li>
+                                    <li>Put a 1 in that position and subtract that value</li>
+                                    <li>Continue right: if the next value fits, put 1; if not, put 0</li>
+                                    <li>Fill remaining positions with 0s when done</li>
+                                </ol>
+                            </div>
+                            
+                            <div class="glass p-8 rounded-2xl border-2 border-purple-300 shadow-lg">
+                                <h4 class="text-2xl font-bold mb-4 text-purple-700">💡 Example: Converting 138</h4>
+                                <div class="glass-dark p-6 rounded-lg font-mono text-white text-lg">
+                                    <div>128 fits in 138 → 1 (138 - 128 = 10)</div>
+                                    <div>64 doesn't fit in 10 → 0</div>
+                                    <div>32 doesn't fit in 10 → 0</div>
+                                    <div>16 doesn't fit in 10 → 0</div>
+                                    <div>8 fits in 10 → 1 (10 - 8 = 2)</div>
+                                    <div>4 doesn't fit in 2 → 0</div>
+                                    <div>2 fits in 2 → 1 (2 - 2 = 0)</div>
+                                    <div>1 doesn't fit in 0 → 0</div>
+                                    <div class="mt-4 text-green-400 text-2xl">Result: 10001010</div>
+                                </div>
+                            </div>
+                        </div>
+                    `
+                },
+                'binToDec': {
+                    title: '🔢 Binary to Decimal Conversion',
+                    content: `
+                        <div class="space-y-6">
+                            <div class="glass p-8 rounded-2xl border-2 border-green-300 shadow-lg">
+                                <h4 class="text-2xl font-bold mb-4 text-green-700">🎯 The Challenge</h4>
+                                <p class="text-lg text-gray-700">Decode binary numbers back into regular decimal numbers!</p>
+                            </div>
+                            
+                            <div class="glass p-8 rounded-2xl border-2 border-blue-300 shadow-lg">
+                                <h4 class="text-2xl font-bold mb-4 text-blue-700">📚 Simple Method</h4>
+                                <ol class="space-y-3 text-lg list-decimal list-inside text-gray-700">
+                                    <li>Write the binary weighting table: 128, 64, 32, 16, 8, 4, 2, 1</li>
+                                    <li>Place your binary digits under the weights</li>
+                                    <li>Add up all the weights where there's a 1</li>
+                                    <li>That sum is your decimal answer!</li>
+                                </ol>
+                            </div>
+                            
+                            <div class="glass p-8 rounded-2xl border-2 border-purple-300 shadow-lg">
+                                <h4 class="text-2xl font-bold mb-4 text-purple-700">💡 Example: Converting 00101001</h4>
+                                <div class="glass-dark p-6 rounded-lg font-mono text-white">
+                                    <div class="grid grid-cols-8 gap-2 mb-4">
+                                        <div class="text-center">128</div>
+                                        <div class="text-center">64</div>
+                                        <div class="text-center">32</div>
+                                        <div class="text-center">16</div>
+                                        <div class="text-center">8</div>
+                                        <div class="text-center">4</div>
+                                        <div class="text-center">2</div>
+                                        <div class="text-center">1</div>
+                                    </div>
+                                    <div class="grid grid-cols-8 gap-2 mb-4">
+                                        <div class="text-center text-gray-400">0</div>
+                                        <div class="text-center text-gray-400">0</div>
+                                        <div class="text-center text-green-400 font-bold">1</div>
+                                        <div class="text-center text-gray-400">0</div>
+                                        <div class="text-center text-green-400 font-bold">1</div>
+                                        <div class="text-center text-gray-400">0</div>
+                                        <div class="text-center text-gray-400">0</div>
+                                        <div class="text-center text-green-400 font-bold">1</div>
+                                    </div>
+                                    <div class="mt-4 text-yellow-400 text-lg">Add the 1s: 32 + 8 + 1</div>
+                                    <div class="text-green-400 text-2xl">Result: 41</div>
+                                </div>
+                            </div>
+                        </div>
+                    `
+                },
+                'hexToBin': {
+                    title: '🎨 Hexadecimal to Binary Conversion',
+                    content: `
+                        <div class="space-y-6">
+                            <div class="glass p-8 rounded-2xl border-2 border-purple-300 shadow-lg">
+                                <h4 class="text-2xl font-bold mb-4 text-purple-700">🎯 The Challenge</h4>
+                                <p class="text-lg text-gray-700">Convert hexadecimal numbers (0-9, A-F) into binary format!</p>
+                            </div>
+                            
+                            <div class="glass p-8 rounded-2xl border-2 border-blue-300 shadow-lg">
+                                <h4 class="text-2xl font-bold mb-4 text-blue-700">📚 Super Easy Method</h4>
+                                <p class="text-lg mb-4 text-gray-700">Each hex digit becomes exactly 4 binary digits!</p>
+                                <div class="grid grid-cols-4 gap-3 text-center font-mono">
+                                    <div class="glass-dark text-white p-3 rounded-lg shadow">0=0000</div>
+                                    <div class="glass-dark text-white p-3 rounded-lg shadow">1=0001</div>
+                                    <div class="glass-dark text-white p-3 rounded-lg shadow">2=0010</div>
+                                    <div class="glass-dark text-white p-3 rounded-lg shadow">3=0011</div>
+                                    <div class="glass-dark text-white p-3 rounded-lg shadow">4=0100</div>
+                                    <div class="glass-dark text-white p-3 rounded-lg shadow">5=0101</div>
+                                    <div class="glass-dark text-white p-3 rounded-lg shadow">6=0110</div>
+                                    <div class="glass-dark text-white p-3 rounded-lg shadow">7=0111</div>
+                                    <div class="glass-dark text-white p-3 rounded-lg shadow">8=1000</div>
+                                    <div class="glass-dark text-white p-3 rounded-lg shadow">9=1001</div>
+                                    <div class="glass-dark text-white p-3 rounded-lg shadow">A=1010</div>
+                                    <div class="glass-dark text-white p-3 rounded-lg shadow">B=1011</div>
+                                    <div class="glass-dark text-white p-3 rounded-lg shadow">C=1100</div>
+                                    <div class="glass-dark text-white p-3 rounded-lg shadow">D=1101</div>
+                                    <div class="glass-dark text-white p-3 rounded-lg shadow">E=1110</div>
+                                    <div class="glass-dark text-white p-3 rounded-lg shadow">F=1111</div>
+                                </div>
+                            </div>
+                        </div>
+                    `
+                },
+                'binToHex': {
+                    title: '🔮 Binary to Hexadecimal Conversion',
+                    content: `
+                        <div class="space-y-6">
+                            <div class="glass p-8 rounded-2xl border-2 border-pink-300 shadow-lg">
+                                <h4 class="text-2xl font-bold mb-4 text-pink-700">🎯 The Challenge</h4>
+                                <p class="text-lg text-gray-700">Group binary numbers into hexadecimal format!</p>
+                            </div>
+                            
+                            <div class="glass p-8 rounded-2xl border-2 border-blue-300 shadow-lg">
+                                <h4 class="text-2xl font-bold mb-4 text-blue-700">📚 Easy Steps</h4>
+                                <ol class="space-y-3 text-lg list-decimal list-inside text-gray-700">
+                                    <li>Break the binary into groups of 4 (right to left)</li>
+                                    <li>Add leading zeros if needed</li>
+                                    <li>Convert each group to hex</li>
+                                </ol>
+                            </div>
+                        </div>
+                    `
+                },
+                'hexToDec': {
+                    title: '🧮 Hexadecimal to Decimal Conversion',
+                    content: `
+                        <div class="space-y-6">
+                            <div class="glass p-8 rounded-2xl border-2 border-orange-300 shadow-lg">
+                                <h4 class="text-2xl font-bold mb-4 text-orange-700">🎯 The Challenge</h4>
+                                <p class="text-lg text-gray-700">Convert hex to decimal using powers of 16!</p>
+                            </div>
+                            
+                            <div class="glass p-8 rounded-2xl border-2 border-blue-300 shadow-lg">
+                                <h4 class="text-2xl font-bold mb-4 text-blue-700">📚 The Method</h4>
+                                <p class="text-lg text-gray-700">Remember: A=10, B=11, C=12, D=13, E=14, F=15</p>
+                            </div>
+                        </div>
+                    `
+                },
+                'decToHex': {
+                    title: '⚡ Decimal to Hexadecimal Conversion',
+                    content: `
+                        <div class="space-y-6">
+                            <div class="glass p-8 rounded-2xl border-2 border-red-300 shadow-lg">
+                                <h4 class="text-2xl font-bold mb-4 text-red-700">🎯 The Challenge</h4>
+                                <p class="text-lg text-gray-700">Divide by 16 and track remainders!</p>
+                            </div>
+                            
+                            <div class="glass p-8 rounded-2xl border-2 border-blue-300 shadow-lg">
+                                <h4 class="text-2xl font-bold mb-4 text-blue-700">📚 Division Method</h4>
+                                <p class="text-lg text-gray-700">Read remainders from bottom to top. Remember: 10=A, 11=B, 12=C, 13=D, 14=E, 15=F</p>
+                            </div>
+                        </div>
+                    `
+                }
+            };
+
+            const tutorial = tutorials[lessonType] || tutorials['decToBin'];
+            document.getElementById('tutorialTitle').textContent = tutorial.title;
+            document.getElementById('tutorialContent').innerHTML = tutorial.content;
+        }
+
+        function generateChallenge() {
+            gameState.currentChallenge++;
+            document.getElementById('challengeNum').textContent = `${gameState.currentChallenge} / ${gameState.totalChallenges}`;
+            document.getElementById('feedback').classList.add('hidden');
+            document.getElementById('checkBtn').classList.remove('hidden');
+            document.getElementById('nextBtn').classList.add('hidden');
+            document.getElementById('hintArea').classList.add('hidden');
+
+            const lessonType = gameState.currentLesson;
+            
+            if (lessonType === 'decToBin') {
+                const num = Math.floor(Math.random() * 200) + 20;
+                gameState.currentQuestion = num;
+                gameState.currentAnswer = num.toString(2).padStart(8, '0');
+                
+                document.getElementById('questionArea').innerHTML = `
+                    <div class="text-center glass p-10 rounded-2xl shadow-lg border-2 border-yellow-300">
+                        <div class="text-3xl mb-6 text-gray-700 font-semibold">Convert this decimal number to binary:</div>
+                        <div class="text-8xl font-bold bg-gradient-to-r from-yellow-500 to-orange-500 bg-clip-text text-transparent mb-8">${num}</div>
+                        <div class="text-lg text-gray-600 font-medium">Enter 8 digits (use leading zeros)</div>
+                    </div>
+                `;
+                
+                document.getElementById('answerArea').innerHTML = `
+                    <div class="flex justify-center gap-3">
+                        ${[...Array(8)].map((_, i) => `
+                            <input type="text" maxlength="1" 
+                                   class="w-16 h-20 text-center text-3xl font-bold glass border-4 border-blue-400 rounded-2xl focus:border-blue-600 focus:outline-none focus:ring-4 focus:ring-blue-200 shadow-lg transition-all"
+                                   id="bit${i}" onkeyup="moveFocus(${i})" 
+                                   onkeydown="return isNumberKey(event)">
+                        `).join('')}
+                    </div>
+                `;
+                
+            } else if (lessonType === 'binToDec') {
+                const num = Math.floor(Math.random() * 200) + 20;
+                const binary = num.toString(2).padStart(8, '0');
+                gameState.currentQuestion = binary;
+                gameState.currentAnswer = num.toString();
+                
+                document.getElementById('questionArea').innerHTML = `
+                    <div class="text-center glass p-10 rounded-2xl shadow-lg border-2 border-green-300">
+                        <div class="text-3xl mb-6 text-gray-700 font-semibold">Convert this binary to decimal:</div>
+                        <div class="text-6xl font-bold bg-gradient-to-r from-green-500 to-teal-500 bg-clip-text text-transparent mb-6 font-mono">${binary}</div>
+                        <div class="grid grid-cols-8 gap-2 max-w-2xl mx-auto mb-2">
+                            ${powerTables[2].map(p => `<div class="text-sm text-gray-600 font-semibold">${p}</div>`).join('')}
+                        </div>
+                    </div>
+                `;
+                
+                document.getElementById('answerArea').innerHTML = `
+                    <input type="number" 
+                           class="w-full max-w-md mx-auto block text-center text-4xl font-bold glass border-4 border-green-400 rounded-2xl p-6 focus:border-green-600 focus:outline-none focus:ring-4 focus:ring-green-200 shadow-lg"
+                           id="decAnswer" placeholder="Enter decimal">
+                `;
+                
+            } else if (lessonType === 'hexToBin') {
+                const hexDigits = '0123456789ABCDEF';
+                const length = Math.floor(Math.random() * 2) + 2;
+                let hex = '';
+                for (let i = 0; i < length; i++) {
+                    hex += hexDigits[Math.floor(Math.random() * 16)];
+                }
+                gameState.currentQuestion = hex;
+                gameState.currentAnswer = hex.split('').map(h => hexChart[h]).join('');
+                
+                document.getElementById('questionArea').innerHTML = `
+                    <div class="text-center glass p-10 rounded-2xl shadow-lg border-2 border-purple-300">
+                        <div class="text-3xl mb-6 text-gray-700 font-semibold">Convert hexadecimal to binary:</div>
+                        <div class="text-8xl font-bold bg-gradient-to-r from-purple-500 to-pink-500 bg-clip-text text-transparent mb-8">${hex}</div>
+                    </div>
+                `;
+                
+                document.getElementById('answerArea').innerHTML = `
+                    <input type="text" 
+                           class="w-full max-w-2xl mx-auto block text-center text-3xl font-bold font-mono glass border-4 border-purple-400 rounded-2xl p-6 focus:border-purple-600 focus:outline-none shadow-lg"
+                           id="binAnswer" placeholder="Enter binary">
+                `;
+                
+            } else if (lessonType === 'binToHex') {
+                const length = (Math.floor(Math.random() * 2) + 2) * 4;
+                let binary = '';
+                for (let i = 0; i < length; i++) {
+                    binary += Math.random() > 0.5 ? '1' : '0';
+                }
+                gameState.currentQuestion = binary;
+                
+                let hex = '';
+                for (let i = 0; i < binary.length; i += 4) {
+                    const chunk = binary.substr(i, 4);
+                    hex += binToHexChart[chunk];
+                }
+                gameState.currentAnswer = hex;
+                
+                document.getElementById('questionArea').innerHTML = `
+                    <div class="text-center glass p-10 rounded-2xl shadow-lg border-2 border-pink-300">
+                        <div class="text-3xl mb-6 text-gray-700 font-semibold">Convert binary to hexadecimal:</div>
+                        <div class="text-5xl font-bold bg-gradient-to-r from-blue-500 to-cyan-500 bg-clip-text text-transparent mb-8 font-mono">${binary}</div>
+                    </div>
+                `;
+                
+                document.getElementById('answerArea').innerHTML = `
+                    <input type="text" 
+                           class="w-full max-w-md mx-auto block text-center text-4xl font-bold glass border-4 border-pink-400 rounded-2xl p-6 focus:border-pink-600 focus:outline-none shadow-lg"
+                           id="hexAnswer" placeholder="Enter hex" style="text-transform: uppercase">
+                `;
+                
+            } else if (lessonType === 'hexToDec') {
+                const hexDigits = '0123456789ABCDEF';
+                const length = Math.floor(Math.random() * 2) + 2;
+                let hex = '';
+                for (let i = 0; i < length; i++) {
+                    hex += hexDigits[Math.floor(Math.random() * 16)];
+                }
+                gameState.currentQuestion = hex;
+                gameState.currentAnswer = parseInt(hex, 16).toString();
+                
+                document.getElementById('questionArea').innerHTML = `
+                    <div class="text-center glass p-10 rounded-2xl shadow-lg border-2 border-orange-300">
+                        <div class="text-3xl mb-6 text-gray-700 font-semibold">Convert hexadecimal to decimal:</div>
+                        <div class="text-8xl font-bold bg-gradient-to-r from-orange-500 to-red-500 bg-clip-text text-transparent mb-8">${hex}</div>
+                    </div>
+                `;
+                
+                document.getElementById('answerArea').innerHTML = `
+                    <input type="number" 
+                           class="w-full max-w-md mx-auto block text-center text-4xl font-bold glass border-4 border-orange-400 rounded-2xl p-6 focus:border-orange-600 focus:outline-none shadow-lg"
+                           id="decAnswer" placeholder="Enter decimal">
+                `;
+                
+            } else if (lessonType === 'decToHex') {
+                const num = Math.floor(Math.random() * 1000) + 100;
+                gameState.currentQuestion = num;
+                gameState.currentAnswer = num.toString(16).toUpperCase();
+                
+                document.getElementById('questionArea').innerHTML = `
+                    <div class="text-center glass p-10 rounded-2xl shadow-lg border-2 border-red-300">
+                        <div class="text-3xl mb-6 text-gray-700 font-semibold">Convert decimal to hexadecimal:</div>
+                        <div class="text-8xl font-bold bg-gradient-to-r from-red-500 to-pink-500 bg-clip-text text-transparent mb-8">${num}</div>
+                    </div>
+                `;
+                
+                document.getElementById('answerArea').innerHTML = `
+                    <input type="text" 
+                           class="w-full max-w-md mx-auto block text-center text-4xl font-bold glass border-4 border-red-400 rounded-2xl p-6 focus:border-red-600 focus:outline-none shadow-lg"
+                           id="hexAnswer" placeholder="Enter hex" style="text-transform: uppercase">
+                `;
+            }
+            
+            setTimeout(() => {
+                const firstInput = document.querySelector('input');
+                if (firstInput) firstInput.focus();
+            }, 100);
+        }
+
+        function isNumberKey(evt) {
+            const charCode = (evt.which) ? evt.which : evt.keyCode;
+            if (charCode > 31 && (charCode < 48 || charCode > 49) && charCode !== 8) {
+                return false;
+            }
+            return true;
+        }
+
+        function moveFocus(index) {
+            const current = document.getElementById(`bit${index}`);
+            if (current.value.length === 1 && index < 7) {
+                document.getElementById(`bit${index + 1}`).focus();
+            }
+        }
+
+        function checkAnswer() {
+            let userAnswer = '';
+            
+            if (gameState.currentLesson === 'decToBin') {
+                for (let i = 0; i < 8; i++) {
+                    const bit = document.getElementById(`bit${i}`).value;
+                    if (bit === '') {
+                        showFeedback('Please fill in all 8 digits!', 'warning');
+                        return;
+                    }
+                    userAnswer += bit;
+                }
+            } else if (gameState.currentLesson === 'binToDec' || gameState.currentLesson === 'hexToDec') {
+                userAnswer = document.getElementById('decAnswer').value.trim();
+            } else if (gameState.currentLesson === 'hexToBin') {
+                userAnswer = document.getElementById('binAnswer').value.trim();
+            } else if (gameState.currentLesson === 'binToHex' || gameState.currentLesson === 'decToHex') {
+                userAnswer = document.getElementById('hexAnswer').value.trim().toUpperCase();
+            }
+            
+            if (userAnswer === '') {
+                showFeedback('Please enter an answer!', 'warning');
+                return;
+            }
+            
+            if (userAnswer === gameState.currentAnswer) {
+                gameState.correctAnswers++;
+                gameState.score += 100;
+                updateScore();
+                showFeedback('🎉 Correct! Amazing work!', 'success');
+                document.getElementById('checkBtn').classList.add('hidden');
+                document.getElementById('nextBtn').classList.remove('hidden');
+            } else {
+                showFeedback(`Not quite! The correct answer is: ${gameState.currentAnswer}`, 'error');
+                document.getElementById('checkBtn').classList.add('hidden');
+                document.getElementById('nextBtn').classList.remove('hidden');
+            }
+        }
+
+        function showFeedback(message, type) {
+            const feedback = document.getElementById('feedback');
+            feedback.classList.remove('hidden');
+            
+            if (type === 'success') {
+                feedback.className = 'mb-8 p-6 rounded-2xl text-center text-xl font-bold shadow-lg glass border-4 border-green-500 text-green-700 celebrate';
+                feedback.style.background = 'rgba(34, 197, 94, 0.2)';
+                setTimeout(() => feedback.classList.remove('celebrate'), 600);
+            } else if (type === 'error') {
+                feedback.className = 'mb-8 p-6 rounded-2xl text-center text-xl font-bold shadow-lg glass border-4 border-red-500 text-red-700';
+                feedback.style.background = 'rgba(239, 68, 68, 0.2)';
+            } else {
+                feedback.className = 'mb-8 p-6 rounded-2xl text-center text-xl font-bold shadow-lg glass border-4 border-yellow-500 text-yellow-700';
+                feedback.style.background = 'rgba(234, 179, 8, 0.2)';
+            }
+            
+            feedback.textContent = message;
+        }
+
+        function nextChallenge() {
+            if (gameState.currentChallenge >= gameState.totalChallenges) {
+                showCompletion();
+            } else {
+                generateChallenge();
+            }
+        }
+
+        function showHint() {
+            const hintArea = document.getElementById('hintArea');
+            const lessonType = gameState.currentLesson;
+            let hint = '';
+            
+            if (lessonType === 'decToBin') {
+                hint = `Start with the largest power of 2 that fits in ${gameState.currentQuestion}. Powers: 128, 64, 32, 16, 8, 4, 2, 1`;
+            } else if (lessonType === 'binToDec') {
+                hint = `Add up the powers of 2 where there's a 1. Remember: 128, 64, 32, 16, 8, 4, 2, 1`;
+            } else if (lessonType === 'hexToBin') {
+                hint = `Convert each hex digit separately. Example: A=1010, 5=0101`;
+            } else if (lessonType === 'binToHex') {
+                hint = `Group the binary from right to left in sets of 4. Add leading zeros if needed.`;
+            } else if (lessonType === 'hexToDec') {
+                hint = `Multiply each digit by its power of 16. A=10, B=11, C=12, D=13, E=14, F=15`;
+            } else if (lessonType === 'decToHex') {
+                hint = `Divide by 16 repeatedly. Remainders (in reverse) are your answer. 10=A, 11=B, 12=C, 13=D, 14=E, 15=F`;
+            }
+            
+            hintArea.innerHTML = `<strong>💡 Hint:</strong> ${hint}`;
+            hintArea.classList.remove('hidden');
+        }
+
+        function showCompletion() {
+            document.getElementById('tutorial').classList.add('hidden');
+            document.getElementById('exercise').classList.add('hidden');
+            document.getElementById('completionScreen').classList.remove('hidden');
+            
+            const percentage = (gameState.correctAnswers / gameState.totalChallenges) * 100;
+            document.getElementById('finalScore').textContent = `${gameState.correctAnswers} / ${gameState.totalChallenges} Correct (${percentage}%)`;
+            
+            if (percentage === 100) {
+                gameState.level = Math.min(gameState.level + 1, 10);
+                updateLevel();
+            }
+        }
+
+        function backToMenu() {
+            document.getElementById('lessonContent').classList.add('hidden');
+            document.getElementById('completionScreen').classList.add('hidden');
+            document.getElementById('lessonSelect').classList.remove('hidden');
+        }
+
+        function restartLesson() {
+            startLesson(gameState.currentLesson);
+        }
+
+        function updateScore() {
+            document.getElementById('score').textContent = gameState.score;
+        }
+
+        function updateLevel() {
+            document.getElementById('level').textContent = gameState.level;
+        }
+    </script>
+</body>
+</html>
