@@ -1,0 +1,516 @@
+Computer Mathematics: There are two alternative base systems that are used most often in computer applications. These are the binary (base two) and hexadecimal (base sixteen) systems. Computers and hand held calculators actually use the binary system for their internal calculations because that system consists of only two symbols, 0 and 1. All numbers can then be represented by electronic “switches,” of one kind or another, where “on” indicates 1 and “off” indicates 0. the hexadecimal system is used extensively by programmers who work with internal computer codes and for communications between the CPU (central processing unit) and a printer or other output device.
+
+The binary system is extreme in that it has only two available symbols (0 and 1); because of this, representing numbers in binary form requires more digits than in any other base. The Binary/Hex/Decimal Conversion ChartLinks to an external site. shows the whole numbers up to 255 expressed in binary and hexadecimal form. Conversions between any of these two special base systems (binary, and hexadecimal) and the decimal system can be done by the following methods.
+
+General Base Conversions: We will consistently indicate bases other than ten with a spelled-out subscript, as in the numeral 53sixteen. Whenever a number appears without a subscript, it is to be assumed that the intended base is ten. Be careful how your read numerals here. The numeral 53sixteen is read “five three base sixteen” not “fifty three.”
+
+For reference in doing numbers expansions and base conversions, the following table gives the first several powers of some numbers used as alternative bases in this study guide.
+
+ 
+
+ 
+
+Seventh Power
+
+Sixth Power
+
+Fifth Power
+
+Fourth Power
+
+Third Power
+
+Second Power
+
+First Power
+
+Zero Power
+
+Base Two
+
+128
+
+64
+
+32
+
+16
+
+8
+
+4
+
+2
+
+1
+
+Base Ten
+
+10,000,000
+
+1,000,000
+
+100,000
+
+10,000
+
+1,000
+
+100
+
+10
+
+1
+
+Base Sixteen
+
+268,435,456
+
+16,777,216
+
+1,048,576
+
+65,536
+
+4,096
+
+256
+
+16
+
+1
+
+Converting from a Decimal Number to a Binary Number
+
+In order to convert the decimal number into its binary equivalent complete the following steps:
+
+Create a binary weighting table making sure that the leftmost value is greater than or equal to half the decimal value to be converted.
+
+So to convert the decimal number 138 we halve it to give 69. the values in the binary weighting table increase in powers of 2 from 1, 2, 4, 16, . . . 128. We will use all 8 columns to convert decimal number 138.
+
+Using the weighting table, working from left to right, select the first weighting number whose value is less than or equal to the decimal value 138. Place a 1 under this weighting value's position.
+
+ 
+
+128
+
+64
+
+32
+
+16
+
+8
+
+4
+
+2
+
+1
+
+1
+
+-
+
+-
+
+-
+
+-
+
+-
+
+-
+
+-
+
+Subtract the weighting value from the decimal value keeping track of the result.
+
+                                              138 (decimal value)
+
+                                           - 128 (weighting value)
+
+                                               10 (value remaining)
+
+Continuing to the right, focus on the next value in your weighting table. If it is greater than the value remaining from your subtraction, place a zero in that bit weighting position. If the next weighting value is less than the remaining value, subtract this weighting value from the remaining value and place a 1 under that weighting position.
+
+128
+
+64
+
+32
+
+16
+
+8
+
+4
+
+2
+
+1
+
+1
+
+0
+
+0
+
+0
+
+1
+
+-
+
+-
+
+-
+
+                                           10 (decimal value)
+
+                                          - 8 (weighting value)
+
+                                            2 (value remaining)
+
+Continue to place a zero in each weighting position until a weighting value is encountered that is less than or equal to the value remaining from your subtraction.
+
+128
+
+64
+
+32
+
+16
+
+8
+
+4
+
+2
+
+1
+
+1
+
+0
+
+0
+
+0
+
+1
+
+0
+
+1
+
+-
+
+                                            2 (decimal value)
+                                          - 2 (weighting value)
+
+                                            0 (value remaining)
+
+Finally, when the remaining value is zero you must complete your binary number by filling the remaining positions with zeros.
+
+ 
+
+128
+
+64
+
+32
+
+16
+
+8
+
+4
+
+2
+
+1
+
+1
+
+0
+
+0
+
+0
+
+1
+
+0
+
+1
+
+0
+
+This concludes the operations required for converting a decimal value to binary. So decimal 128 equals binary 10001010.
+
+Converting a Binary Number to a Decimal Number
+
+In order to convert the binary number into its decimal equivalent complete the following steps:
+
+Create a binary weighting table making sure that it has the same number of items as the number of bits in the binary number and write the binary digits under the column values.
+
+ 
+
+128
+
+64
+
+32
+
+16
+
+8
+
+4
+
+2
+
+1
+
+0
+
+0
+
+1
+
+0
+
+1
+
+0
+
+0
+
+1
+
+Add the numbers in the list that are marked with a 1. In the list these are 32, 8, and 1. When added these values give: 32 + 8 + 1 = 41.
+
+This concludes the operations required for converting a binary value to decimal. So binary 00101001 equals decimal 41.
+
+Converting a Hexadecimal Number to a Binary Number
+
+Each hexadecimal digit yields a 4-digit binary equivalent. In order to convert a hexadecimal number to a binary number create a binary conversion chart.
+
+0
+
+0000
+
+ 
+
+8
+
+1000
+
+1
+
+0001
+
+ 
+
+9
+
+1001
+
+2
+
+0010
+
+ 
+
+A
+
+1010
+
+3
+
+0011
+
+ 
+
+B
+
+1011
+
+4
+
+0100
+
+ 
+
+C
+
+1100
+
+5
+
+0101
+
+ 
+
+D
+
+1101
+
+6
+
+0110
+
+ 
+
+E
+
+1110
+
+7
+
+0111
+
+ 
+
+F
+
+1111
+
+Match each hexadecimal value with the chart and combine those values. For example, in order to convert hexadecimal number 8B4F to binary you see that:
+
+                                          8 =1000 B=1011 F=0100 F=1111
+                              Combining these groups of digits give us the binary value 1000101101001111.
+
+Converting a Binary Number to a Hexadecimal Number
+
+In order to convert a binary number to a hexadecimal number create a binary conversion chart.
+
+ 
+
+0
+
+0000
+
+ 
+
+8
+
+1000
+
+1
+
+0001
+
+ 
+
+9
+
+1001
+
+2
+
+0010
+
+ 
+
+A
+
+1010
+
+3
+
+0011
+
+ 
+
+B
+
+1011
+
+4
+
+0100
+
+ 
+
+C
+
+1100
+
+5
+
+0101
+
+ 
+
+D
+
+1101
+
+6
+
+0110
+
+ 
+
+E
+
+1110
+
+7
+
+0111
+
+ 
+
+F
+
+1111
+
+ 
+
+Break the binary number into 4 digit blocks.
+
+Match each binary value with the chart and combine those values. For example, in order to convert binary number 101000101110 to hexadecimal you see that:
+
+                                        A =1010 2=0010 E=1110
+
+Combining these groups of digits give us the hexadecimal value A2E.
+
+Converting a Hexadecimal Number to a Decimal Number
+
+There are two methods to convert from hexadecimal to decimal numbers. First the math version;
+
+To convert hexadecimal number A4BC to a decimal number, we can refer to the powers table and add those values to obtain a decimal value. For example:
+
+                                         A4BCsixteen = (10*163)+(4*162)+(11*161)+(12*160)
+                                                                = (10*4096)+(4*256)+(11*16)+(12*1)
+
+                                                                = 40960 + 1024 + 176 + 12
+
+                                                                = 42172
+
+Therefore, hexadecimal number A4BC gives us the decimal value of 42,172.
+
+The other method is to convert a hexadecimal number to a binary number using the binary conversion chart and then convert the binary value to decimal.
+
+Converting a Decimal Number to a Hexadecimal Number
+
+There are two methods to convert from decimal to hexadecimal numbers. First the math version;
+
+To convert decimal number 748 to a hexadecimal number we can use the division method. For example;
+
+ 
+
+                                        748 / 16 = 46 with a remainder of 12 (hexadecimal notation C)
+
+                                            46 / 16 = 2 with a remainder of 14 (hexadecimal notation E)
+
+                                              2 / 16 = 0 with a remainder of 2 (hexadecimal notation 2)
+
+ 
+
+Giving the hexadecimal value of 2EC.
+
+The other method is to convert a decimal number to a binary number and then convert the binary value to hexadecimal using the binary conversion chart.
